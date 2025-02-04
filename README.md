@@ -167,15 +167,19 @@ Navigate to the Frontend Directory:
 
 Create the `.env` File for the Frontend. Use same commands for creating and editing .env files as [above]((#create-an-env-file-for-the-backend))
 
-- Set a port for your backend server inside the .env file:
+- For development, set your backend server URL in the .env file:
   
-      REACT_APP_BACKEND_SERVER=http://localhost:5000
+      REACT_APP_BACKEND_SERVER=http://localhost:8080
 
-Install Dependencies and generate the build:
+Install Dependencies and build:
     
     npm install
     npm run build
 
+Note: For production deployment, do not hardcode REACT_APP_BACKEND_SERVER in the .env file. Instead:
+1. Build the frontend without a specific backend URL
+2. When deploying, set the backend URL through your deployment environment or by updating the configuration file after build
+3. The static files can then be served from GitHub releases and connect to any backend server URL
 
 Start the Application:
     
@@ -187,7 +191,7 @@ Navigate and get familiar with the app
 Usage
 
     Register or Login:
-        Open the application in your browser ---> http://localhost:5000
+        Open the application in your browser ---> http://localhost:8080
         Register a new account or log in with your existing credentials.
 
     Upload avatars:
@@ -209,3 +213,11 @@ Usage
         Fill in your billing and shipping information.
         Choose your preferred payment method.
         Review the total cost and confirm your purchase.
+
+## Backend Environment Variables
+
+Add these variables to your backend `.env` file:
+
+    JWT_SECRET_KEY=your_generated_key
+    FLASK_ENV=development
+    FRONTEND_RELEASE_URL=https://github.com/YourUsername/YourRepo/releases/download/latest/frontend_build.zip

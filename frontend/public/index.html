@@ -11,13 +11,19 @@
 
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
+  <!-- Add runtime config before any other scripts -->
+  <script>
+    window.__RUNTIME_CONFIG__ = {
+        BACKEND_URL: window.location.origin // This will use the same origin as the page
+    };
+  </script>
+
   <title>Market Mate</title>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-
 </body>
 
 </html>

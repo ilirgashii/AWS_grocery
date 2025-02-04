@@ -9,24 +9,11 @@ from sqlalchemy import text
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from datetime import timedelta
+from config import Config
+from utils.frontend_manager import download_and_extract_frontend
 
 load_dotenv()
 db = SQLAlchemy()
-
-class Config:
-    """App configuration variables."""
-    if os.getenv("FLASK_ENV") == "development":
-        SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.abspath(os.path.dirname(__file__)), "local.db")
-
-    else:
-        POSTGRES_URI = os.getenv("POSTGRES_URI")
-        SQLALCHEMY_DATABASE_URI = POSTGRES_URI
-    print(SQLALCHEMY_DATABASE_URI)
-
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=4)
-
 
 def create_app():
     """
@@ -38,11 +25,58 @@ def create_app():
     Returns:
         Flask: The configured Flask application.
     """
-    app = Flask(__name__,
-                static_folder="../../frontend/build/static",
-                template_folder=os.path.join(os.path.dirname(__file__), "../../frontend/build"))
+    app = Flask(__name__, static_folder=None)  # Initialize without static folder
     CORS(app, resources={r"/*": {"origins": "*"}})
     app.config.from_object(Config)
+
+    # Download frontend files
+    with app.app_context():
+        logging.info("Downloading frontend files...")
+        if download_and_extract_frontend():
+            logging.info("Frontend files downloaded successfully")
+        else:
+            logging.error("Failed to download frontend files")
+
+    # Set up static file serving
+    app.static_folder = app.config['FRONTEND_PATH']
+    app.static_url_path = ''  # This ensures static files are served from the root
+
+    # Register blueprints for both prefixed and unprefixed routes
+    from app.routes.auth_routes import auth_bp
+    from app.routes.product_routes import product_bp
+    from app.routes.user_routes import user_bp
+    from app.routes.health_routes import health_bp
+    
+    # Register routes without prefix
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(product_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(health_bp)
+    
+    # Register routes with 'undefined' prefix
+    app.register_blueprint(auth_bp, url_prefix='/undefined')
+    app.register_blueprint(product_bp, url_prefix='/undefined')
+    app.register_blueprint(user_bp, url_prefix='/undefined')
+    app.register_blueprint(health_bp, url_prefix='/undefined')
+
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve(path):
+        if path != "" and os.path.exists(os.path.join(app.config['FRONTEND_PATH'], path)):
+            return send_from_directory(app.config['FRONTEND_PATH'], path)
+            
+        # Read and modify index.html content
+        with open(os.path.join(app.config['FRONTEND_PATH'], 'index.html'), 'r') as f:
+            content = f.read()
+            
+        # Use empty string for backend URL to use relative paths
+        backend_url = ""
+        
+        # Replace the placeholder with empty string
+        content = content.replace('window.__RUNTIME_CONFIG__={BACKEND_URL:"{{BACKEND_URL}}"}', 
+                                f'window.__RUNTIME_CONFIG__={{BACKEND_URL:"{backend_url}"}};')
+        
+        return content, 200, {'Content-Type': 'text/html'}
 
     db.init_app(app)
 
@@ -51,26 +85,6 @@ def create_app():
             db.session.execute(text('PRAGMA foreign_keys=ON'))
 
     JWTManager(app)
-    Migrate(app, db)
-    setup_logging(app)
-
-    from .routes.auth_routes import auth_bp
-    from .routes.user_routes import user_bp
-    from .routes.product_routes import product_bp
-    from .routes.health_routes import health_bp
-
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(user_bp)
-    app.register_blueprint(product_bp)
-    app.register_blueprint(health_bp)
-
-    @app.route("/", defaults={"path": ""})
-    @app.route("/<path:path>")
-    def serve_react_app(path):
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
-        else:
-            return render_template("index.html")
 
     return app
 
