@@ -14,7 +14,7 @@
 
 ## 📌 Table of Contents
 
-- [Overview](#overview)
+- [Overview](#-overview)
 - [Features](#🛒-features)
 - [Screenshots & Demo](#📸-screenshots--demo)
 - [Prerequisites](#📋-prerequisites)
