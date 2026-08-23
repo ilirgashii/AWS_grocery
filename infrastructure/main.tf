@@ -8,6 +8,17 @@ resource "aws_instance" "app_server" {
   ami		= "ami-0c02fb55956c7d316"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.app_sg.id]
+  iam_instance_profile = aws_iam_instance_profile.grocery_ec2_profile.name
+  key_name = aws_key_pair.grocery_key.key_name
+  
+  user_data = <<-EOF
+			  #!/bin/bash
+			  amazon-linux-extras install docker -y
+			  systemctl start docker
+			  systemctl enable docker
+			  usermod -a -G docker ec2-user
+			EOF
+			
   tags = {
     Name = "AWS-Grocery-Server"
  }
@@ -29,6 +40,22 @@ resource "aws_security_group" "app_sg" {
 	description	= "HTTP"
 	from_port	= 80
 	to_port		= 80
+	protocol	= "tcp"
+	cidr_blocks	= ["0.0.0.0/0"]
+}
+
+  ingress {
+	description	= "GroceryMate"
+	from_port	= 5000
+	to_port		= 5000
+	protocol	= "tcp"
+	cidr_blocks	= ["0.0.0.0/0"]
+}
+
+  ingress {
+	description	= "PostgreSQL RDS"
+	from_port	= 5432
+	to_port		= 5432
 	protocol	= "tcp"
 	cidr_blocks	= ["0.0.0.0/0"]
 }
