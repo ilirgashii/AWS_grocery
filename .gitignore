@@ -1,7 +1,20 @@
-.idea/aws.xml
+# IDE
+.idea/
+*.iml
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Frontend temporary/build files
 frontend/frontend-build.zip
 frontend/temp_extract/
 frontend/src/config.js~
-venv/
-logs/
-*.log
