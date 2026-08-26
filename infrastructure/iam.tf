@@ -13,7 +13,7 @@ resource "aws_iam_role" "grocery_ec2_role" {
       },
     ]
   })
-  
+
 }
 
 resource "aws_iam_role_policy_attachment" "grocery_s3_access" {

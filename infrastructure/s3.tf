@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "avatars" {
-  bucket = "grocerymate-avatars-test-ig"
-
+  bucket        = "grocerymate-avatars-test-ig"
+  force_destroy = true
 
   tags = {
     Name        = "Grocerymate-Avatars"
@@ -23,5 +23,5 @@ resource "aws_s3_bucket_public_access_block" "avatars_public_access" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-}   
+}
 
