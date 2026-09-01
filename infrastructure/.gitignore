@@ -18,3 +18,14 @@
 # Crash logs
 crash.log
 crash.*.log
+
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+
+# Private keys
+*.pem
