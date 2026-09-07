@@ -1,11 +1,11 @@
 
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-central-1"
 }
 
 
 resource "aws_instance" "app_server" {
-  ami                    = "ami-0c02fb55956c7d316"
+  ami                    = "ami-0f2f6d6f49dbe9fd1"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.app_sg.id]
@@ -14,20 +14,38 @@ resource "aws_instance" "app_server" {
 
   user_data = <<-EOF
   #!/bin/bash
+  set -e
+
+  echo "=== GroceryMate EC2 initialization started ==="
+
+  # Update packages
+  dnf update -y
 
   # Install Docker
-  amazon-linux-extras install docker -y
-  systemctl start docker
+  echo "Installing Docker..."
+  dnf install -y docker
+
   systemctl enable docker
+  systemctl start docker
+
+  # Allow ec2-user to use Docker
   usermod -a -G docker ec2-user
 
-  # Install PostgreSQL client 14+
-  amazon-linux-extras enable postgresql14
-  yum clean metadata
-  amazon-linux-extras install postgresql14 -y
+  # Install PostgreSQL client
+  echo "Installing PostgreSQL client..."
+  dnf install -y postgresql16
 
-  # Signal that EC2 is ready for deployment
+  # Verify installations
+  echo "Docker version:"
+  docker --version
+
+  echo "PostgreSQL client version:"
+  psql --version
+
+  # Signal that EC2 is ready for Terraform deployment
   touch /opt/grocery-ready
+
+  echo "=== GroceryMate EC2 initialization complete ==="
 EOF
 
   tags = {
