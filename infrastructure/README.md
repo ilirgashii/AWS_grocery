@@ -618,4 +618,4 @@ After testing:
 
 
 
-Made with ❤️ for Infrastructure as Code learning
+Made for Infrastructure as Code learning
