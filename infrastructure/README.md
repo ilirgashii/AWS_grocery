@@ -252,10 +252,10 @@ infrastructure/
 ├── main.tf                          # EC2, RDS, S3, Outputs
 ├── vpc.tf                           # VPC, Subnets, IGW, Route Tables
 ├── deploy.tf                        # Deployment provisioners + CloudWatch
-├── cloudwatch.tf                    # CloudWatch Log Group + IAM Policy (Week 9)
+├── cloudwatch.tf                    # CloudWatch Log Group + IAM Policy 
 ├── variables.tf                     # Input variables (db_username, password, etc)
-├── terraform.tfvars                 # Secret values (git-ignored) ⚠️
-├── terraform.tfstate                # State file (git-ignored) ⚠️
+├── terraform.tfvars                 # Secret values (git-ignored) 
+├── terraform.tfstate                # State file (git-ignored) 
 ├── .gitignore                       # Protect secrets & state files
 └── README.md                        # This file
 ```
@@ -341,40 +341,6 @@ Data Transfer:          $1-2
 ─────────────────────────────
 TOTAL:                  $23-25/month
 ```
-
-### Free Tier (First 12 Months)
-
-If you're a new AWS account:
-- EC2: 750 hours/month free
-- RDS: 750 hours/month + 20GB storage free
-- S3: 5GB free first year
-
-**Your cost: $0 for 12 months!** 🎉
-
-### Cost Optimization Tips
-
-1. **Use t2.micro** - Free tier eligible
-2. **Turn off when not needed:**
-   ```bash
-   # Stop EC2 (not delete)
-   aws ec2 stop-instances --instance-ids i-xxxxx --region eu-central-1
-   ```
-
-3. **Clean up after testing:**
-   ```bash
-   # Destroy all resources
-   terraform destroy -auto-approve
-   # Removes: EC2, RDS, S3, VPC, etc.
-   ```
-
-4. **Monitor spending:**
-   ```
-   AWS Console → Billing → Bills
-   Set up CloudWatch Alarms for budget exceeded
-   ```
-
----
-
 ## 🧹 Cleanup
 
 ### Destroy Infrastructure
@@ -389,18 +355,6 @@ terraform plan -destroy
 terraform destroy -auto-approve
 ```
 
-**What gets deleted:**
-- ✅ EC2 instance
-- ✅ RDS database
-- ✅ S3 bucket
-- ✅ VPC, subnets, security groups
-- ✅ CloudWatch logs
-- ✅ IAM roles
-
-**What stays:**
-- ✅ Terraform code (can re-deploy anytime)
-- ✅ GitHub repository
-- ✅ Local backend code
 
 ### State File Cleanup
 
@@ -539,10 +493,6 @@ resource "aws_db_instance" "app_db_read_replica" {
   instance_class      = "db.t3.micro"
 }
 ```
-
----
-
-
 ---
 
 ## 📞 Support
