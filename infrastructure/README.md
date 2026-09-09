@@ -48,7 +48,7 @@ AWS Cloud (eu-central-1)
 |-----------|------|------|---------|
 | EC2 | Compute | Public | Run Flask app in Docker |
 | RDS PostgreSQL | Database | Private | Store application data |
-| S3 | Storage | Public | Store user avatars |
+| S3 | Storage | Managed | Store user avatars |
 | CloudWatch | Monitoring | Managed | Real-time application logs |
 | VPC | Network | Managed | Isolated network environment |
 | Security Groups | Network | Managed | Restrict traffic |
