@@ -33,7 +33,7 @@ AWS Cloud (eu-central-1)
 │   │   └── Internet Gateway
 │   │
 │   └── Private Subnets (10.0.2.0/24, 10.0.3.0/24) - AZ: 1a, 1b
-│       └── RDS PostgreSQL (Multi-AZ)
+│       └── RDS PostgreSQL in private subnets across two Availability Zones
 │
 ├── S3 Bucket (Avatars Storage)
 ├── CloudWatch Logs (/aws/ec2/grocerymate)
