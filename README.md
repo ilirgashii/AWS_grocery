@@ -343,18 +343,6 @@ MIT License - See LICENSE file for details
 
 **Ilir Gashi**
 - GitHub: [@ilirgashii](https://github.com/ilirgashii)
-- Email: ilirg@example.com
+- Email: ilirgashi099@gmail.com
 
 ---
-
-## 🎓 Project Status
-
-✅ **Week 9 - CloudWatch Integration Complete**
-- Infrastructure deployed to eu-central-1
-- Application tested and working
-- Logs flowing to CloudWatch
-- Documented & committed to GitHub
-
----
-
-Made with ❤️ for cloud engineering learning
