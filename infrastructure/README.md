@@ -23,8 +23,23 @@ Complete Terraform configuration for deploying GroceryMate on AWS (eu-central-1 
 
 ### Infrastructure Overview
 
-```
-AWS Cloud (eu-central-1) ├── VPC (10.0.0.0/16) │ ├── Public Subnet (10.0.1.0/24) - AZ: eu-central-1a │ │ └── EC2 Instance (t2.micro) │ │ └── Docker Container │ │ └── Flask App (Port 5000) │ │ │ └── Private Subnets │ ├── 10.0.2.0/24 - AZ: eu-central-1a │ └── 10.0.3.0/24 - AZ: eu-central-1b │ └── RDS PostgreSQL │ ├── Internet Gateway ├── S3 Bucket (Avatar Storage) ├── CloudWatch Logs └── IAM Roles & Security Groups
+```text
+AWS Cloud (eu-central-1)
+├── VPC (10.0.0.0/16)
+│   ├── Public Subnet (10.0.1.0/24) - AZ: eu-central-1a
+│   │   └── EC2 Instance (t2.micro)
+│   │       └── Docker Container
+│   │           └── Flask App (Port 5000)
+│   │
+│   └── Private Subnets
+│       ├── 10.0.2.0/24 - AZ: eu-central-1a
+│       └── 10.0.3.0/24 - AZ: eu-central-1b
+│           └── RDS PostgreSQL
+│
+├── Internet Gateway
+├── S3 Bucket (Avatar Storage)
+├── CloudWatch Logs
+└── IAM Roles & Security Groups
 ```
 
 ### Components
