@@ -143,7 +143,7 @@ terraform apply -auto-approve
 2. Internet Gateway & Route Tables
 3. Security Groups (EC2 + RDS)
 4. EC2 Instance (t2.micro)
-5. RDS PostgreSQL Instance (Multi-AZ)
+5. RDS PostgreSQL in private subnets across two Availability Zones
 6. S3 Bucket (Avatars)
 7. CloudWatch Log Group
 8. IAM Roles & Policies
