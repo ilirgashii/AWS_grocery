@@ -10,7 +10,10 @@
 *.tfvars.json
 !terraform.tfvars.example
 
-# Sensitive/private keys
+# Terraform plan files
+*.tfplan
+
+# Sensitive / private keys
 *.pem
 *_rsa
 *.key
@@ -18,14 +21,3 @@
 # Crash logs
 crash.log
 crash.*.log
-
-
-# Terraform
-.terraform/
-*.tfstate
-*.tfstate.*
-*.tfplan
-terraform.tfvars
-
-# Private keys
-*.pem
