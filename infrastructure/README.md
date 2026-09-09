@@ -495,7 +495,7 @@ Re-deploy: terraform apply
 
 ---
 
-## 📚 Advanced Topics
+## 📚 Advanced Topics - Feauture
 
 ### Terraform State Management
 
@@ -542,38 +542,6 @@ resource "aws_db_instance" "app_db_read_replica" {
 
 ---
 
-## 🔄 Deployment Workflow (Week 9)
-
-```
-1. Configure AWS credentials
-   └─ aws sso login --profile default
-
-2. Initialize Terraform
-   └─ terraform init
-
-3. Validate configuration
-   └─ terraform validate
-
-4. Review planned changes
-   └─ terraform plan
-
-5. Deploy infrastructure
-   └─ terraform apply -auto-approve
-   (Creates 25 resources in 5-10 min)
-
-6. Get outputs
-   └─ terraform output
-   (EC2 IP, RDS endpoint, S3 name, CloudWatch logs)
-
-7. Test application
-   └─ curl http://<EC2-IP>:5000/api/products/all_products
-
-8. View CloudWatch logs
-   └─ aws logs tail /aws/ec2/grocerymate --follow
-
-9. When done, cleanup
-   └─ terraform destroy -auto-approve
-```
 
 ---
 
@@ -589,35 +557,8 @@ resource "aws_db_instance" "app_db_read_replica" {
 ### Contact
 
 - **Author:** Ilir Gashi
-- **Email:** ilirg@example.com
+- **Email:** ilirgashi099@gmail.com
 - **GitHub:** @ilirgashii
 
 ---
 
-## ✅ Checklist
-
-Before deployment:
-- [ ] AWS account created
-- [ ] AWS credentials configured (aws sso login)
-- [ ] Terraform installed (terraform --version)
-- [ ] SSH key pair created (~/.ssh/grocery-ec2-key)
-- [ ] Docker installed (for local testing)
-
-After deployment:
-- [ ] terraform output shows EC2 IP, RDS endpoint, S3 name
-- [ ] curl test returns product JSON
-- [ ] SSH to EC2 succeeds
-- [ ] docker ps shows running container
-- [ ] CloudWatch logs appear
-
-After testing:
-- [ ] terraform destroy completed
-- [ ] AWS resources cleaned up
-- [ ] GitHub code saved
-- [ ] Screenshots/documentation saved
-
----
-
-
-
-Made for Infrastructure as Code learning
