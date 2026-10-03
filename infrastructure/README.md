@@ -507,7 +507,7 @@ resource "aws_db_instance" "app_db_read_replica" {
 ### Contact
 
 - **Author:** Ilir Gashi
-- **Email:** ilirgashi099@gmail.com
+- **Email:** ilir_gashi_16@hotmail.com
 - **GitHub:** @ilirgashii
 
 ---
