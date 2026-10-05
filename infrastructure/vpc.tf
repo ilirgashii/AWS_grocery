@@ -1,3 +1,4 @@
+# Main VPC for GroceryMate infrastructure
 resource "aws_vpc" "grocery_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
@@ -10,7 +11,7 @@ resource "aws_vpc" "grocery_vpc" {
   }
 }
 
-
+# Public subnet - hosts the EC2 application server
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.grocery_vpc.id
   cidr_block              = "10.0.1.0/24"
@@ -23,7 +24,7 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-
+# Private subnets - used by the RDS DB subnet group
 resource "aws_subnet" "private_subnet_1" {
   vpc_id            = aws_vpc.grocery_vpc.id
   cidr_block        = "10.0.2.0/24"
@@ -45,6 +46,7 @@ resource "aws_subnet" "private_subnet_2" {
   }
 }
 
+# Internet Gateway - provides internet connectivity to the public subnet
 resource "aws_internet_gateway" "grocery_igw" {
   vpc_id = aws_vpc.grocery_vpc.id
 
@@ -53,6 +55,7 @@ resource "aws_internet_gateway" "grocery_igw" {
   }
 }
 
+# Public route table - routes internet traffic through the IGW
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.grocery_vpc.id
 
@@ -71,6 +74,7 @@ resource "aws_route_table_association" "public_subnet_association" {
   route_table_id = aws_route_table.public_rt.id
 }
 
+# Private route table - no direct route to the internet
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.grocery_vpc.id
 
@@ -90,6 +94,7 @@ resource "aws_route_table_association" "private_subnet_2_association" {
 }
 
 
+# RDS requires subnets in at least two Availability Zones
 resource "aws_db_subnet_group" "grocery_db_subnet_group" {
   name = "grocerymate-db-subnet-group"
 
