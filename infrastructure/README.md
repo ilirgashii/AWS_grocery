@@ -23,20 +23,22 @@ Complete Terraform configuration for deploying GroceryMate on AWS (eu-central-1 
 
 ### Infrastructure Overview
 
-```
+```text
 AWS Cloud (eu-central-1)
 ├── VPC (10.0.0.0/16)
 │   ├── Public Subnet (10.0.1.0/24) - AZ: eu-central-1a
-│   │   ├── EC2 Instance (t2.micro)
-│   │   │   └── Docker Container
-│   │   │       └── Flask App (Port 5000)
-│   │   └── Internet Gateway
+│   │   └── EC2 Instance (t2.micro)
+│   │       └── Docker Container
+│   │           └── Flask App (Port 5000)
 │   │
-│   └── Private Subnets (10.0.2.0/24, 10.0.3.0/24) - AZ: 1a, 1b
-│       └── RDS PostgreSQL (Multi-AZ)
+│   └── Private Subnets
+│       ├── 10.0.2.0/24 - AZ: eu-central-1a
+│       └── 10.0.3.0/24 - AZ: eu-central-1b
+│           └── RDS PostgreSQL
 │
-├── S3 Bucket (Avatars Storage)
-├── CloudWatch Logs (/aws/ec2/grocerymate)
+├── Internet Gateway
+├── S3 Bucket (Avatar Storage)
+├── CloudWatch Logs
 └── IAM Roles & Security Groups
 ```
 
@@ -46,7 +48,7 @@ AWS Cloud (eu-central-1)
 |-----------|------|------|---------|
 | EC2 | Compute | Public | Run Flask app in Docker |
 | RDS PostgreSQL | Database | Private | Store application data |
-| S3 | Storage | Public | Store user avatars |
+| S3 | Storage | Managed | Store user avatars |
 | CloudWatch | Monitoring | Managed | Real-time application logs |
 | VPC | Network | Managed | Isolated network environment |
 | Security Groups | Network | Managed | Restrict traffic |
@@ -143,7 +145,7 @@ terraform apply -auto-approve
 2. Internet Gateway & Route Tables
 3. Security Groups (EC2 + RDS)
 4. EC2 Instance (t2.micro)
-5. RDS PostgreSQL Instance (Multi-AZ)
+5. RDS PostgreSQL in private subnets across two Availability Zones
 6. S3 Bucket (Avatars)
 7. CloudWatch Log Group
 8. IAM Roles & Policies
@@ -250,10 +252,10 @@ infrastructure/
 ├── main.tf                          # EC2, RDS, S3, Outputs
 ├── vpc.tf                           # VPC, Subnets, IGW, Route Tables
 ├── deploy.tf                        # Deployment provisioners + CloudWatch
-├── cloudwatch.tf                    # CloudWatch Log Group + IAM Policy (Week 9)
+├── cloudwatch.tf                    # CloudWatch Log Group + IAM Policy 
 ├── variables.tf                     # Input variables (db_username, password, etc)
-├── terraform.tfvars                 # Secret values (git-ignored) ⚠️
-├── terraform.tfstate                # State file (git-ignored) ⚠️
+├── terraform.tfvars                 # Secret values (git-ignored) 
+├── terraform.tfstate                # State file (git-ignored) 
 ├── .gitignore                       # Protect secrets & state files
 └── README.md                        # This file
 ```
@@ -339,40 +341,6 @@ Data Transfer:          $1-2
 ─────────────────────────────
 TOTAL:                  $23-25/month
 ```
-
-### Free Tier (First 12 Months)
-
-If you're a new AWS account:
-- EC2: 750 hours/month free
-- RDS: 750 hours/month + 20GB storage free
-- S3: 5GB free first year
-
-**Your cost: $0 for 12 months!** 🎉
-
-### Cost Optimization Tips
-
-1. **Use t2.micro** - Free tier eligible
-2. **Turn off when not needed:**
-   ```bash
-   # Stop EC2 (not delete)
-   aws ec2 stop-instances --instance-ids i-xxxxx --region eu-central-1
-   ```
-
-3. **Clean up after testing:**
-   ```bash
-   # Destroy all resources
-   terraform destroy -auto-approve
-   # Removes: EC2, RDS, S3, VPC, etc.
-   ```
-
-4. **Monitor spending:**
-   ```
-   AWS Console → Billing → Bills
-   Set up CloudWatch Alarms for budget exceeded
-   ```
-
----
-
 ## 🧹 Cleanup
 
 ### Destroy Infrastructure
@@ -387,18 +355,6 @@ terraform plan -destroy
 terraform destroy -auto-approve
 ```
 
-**What gets deleted:**
-- ✅ EC2 instance
-- ✅ RDS database
-- ✅ S3 bucket
-- ✅ VPC, subnets, security groups
-- ✅ CloudWatch logs
-- ✅ IAM roles
-
-**What stays:**
-- ✅ Terraform code (can re-deploy anytime)
-- ✅ GitHub repository
-- ✅ Local backend code
 
 ### State File Cleanup
 
@@ -493,7 +449,7 @@ Re-deploy: terraform apply
 
 ---
 
-## 📚 Advanced Topics
+## 📚 Advanced Topics - Feauture
 
 ### Terraform State Management
 
@@ -537,42 +493,6 @@ resource "aws_db_instance" "app_db_read_replica" {
   instance_class      = "db.t3.micro"
 }
 ```
-
----
-
-## 🔄 Deployment Workflow (Week 9)
-
-```
-1. Configure AWS credentials
-   └─ aws sso login --profile default
-
-2. Initialize Terraform
-   └─ terraform init
-
-3. Validate configuration
-   └─ terraform validate
-
-4. Review planned changes
-   └─ terraform plan
-
-5. Deploy infrastructure
-   └─ terraform apply -auto-approve
-   (Creates 25 resources in 5-10 min)
-
-6. Get outputs
-   └─ terraform output
-   (EC2 IP, RDS endpoint, S3 name, CloudWatch logs)
-
-7. Test application
-   └─ curl http://<EC2-IP>:5000/api/products/all_products
-
-8. View CloudWatch logs
-   └─ aws logs tail /aws/ec2/grocerymate --follow
-
-9. When done, cleanup
-   └─ terraform destroy -auto-approve
-```
-
 ---
 
 ## 📞 Support
@@ -587,35 +507,8 @@ resource "aws_db_instance" "app_db_read_replica" {
 ### Contact
 
 - **Author:** Ilir Gashi
-- **Email:** ilirg@example.com
+- **Email:** ilir_gashi_16@hotmail.com
 - **GitHub:** @ilirgashii
 
 ---
 
-## ✅ Checklist
-
-Before deployment:
-- [ ] AWS account created
-- [ ] AWS credentials configured (aws sso login)
-- [ ] Terraform installed (terraform --version)
-- [ ] SSH key pair created (~/.ssh/grocery-ec2-key)
-- [ ] Docker installed (for local testing)
-
-After deployment:
-- [ ] terraform output shows EC2 IP, RDS endpoint, S3 name
-- [ ] curl test returns product JSON
-- [ ] SSH to EC2 succeeds
-- [ ] docker ps shows running container
-- [ ] CloudWatch logs appear
-
-After testing:
-- [ ] terraform destroy completed
-- [ ] AWS resources cleaned up
-- [ ] GitHub code saved
-- [ ] Screenshots/documentation saved
-
----
-
-
-
-Made with ❤️ for Infrastructure as Code learning
