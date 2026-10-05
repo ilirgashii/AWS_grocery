@@ -22,3 +22,8 @@ variable "jwt_secret_key" {
   type        = string
   sensitive   = true
 }
+
+variable "my_ip" {
+  description = "88.130.53.43/32"
+  type        = string
+}
