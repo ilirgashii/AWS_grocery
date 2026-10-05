@@ -8,9 +8,14 @@ resource "terraform_data" "grocery_deploy" {
     aws_iam_role_policy.cloudwatch_logs_policy
   ]
 
-  triggers_replace = [
-    var.jwt_secret_key
-  ]
+triggers_replace = [
+  var.jwt_secret_key,
+  sha256(join("", [
+    for f in fileset("${path.module}/../backend", "**") :
+    filesha256("${path.module}/../backend/${f}")
+  ]))
+]
+  
 
   # SHTO KËTË - Copy backend folder
   provisioner "file" {
