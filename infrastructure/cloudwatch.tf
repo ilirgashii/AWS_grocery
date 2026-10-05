@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_log_group" "grocerymate_logs" { #aws_cloudwatch_log_group = AWS resource type (CloudWatch Log Group)grocerymate_logs = emri në Terraform (jo në AWS, vetëm për referencë)
+resource "aws_cloudwatch_log_group" "grocerymate_logs" { # CloudWatch Log Group for GroceryMate application logs
   name = "/aws/ec2/grocerymate"                          #name = emri real në AWS: /aws/ec2/grocerymate ✅
 
   retention_in_days = 7 #how long to keep logs (7 days)
@@ -9,8 +9,8 @@ resource "aws_cloudwatch_log_group" "grocerymate_logs" { #aws_cloudwatch_log_gro
 }
 
 
-
-resource "aws_iam_role_policy" "cloudwatch_logs_policy" { #aws_iam_role_policy creates policy and attach in
+# Allows the EC2 IAM role to send application logs to CloudWatch
+resource "aws_iam_role_policy" "cloudwatch_logs_policy" { 
   name = "cloudwatch-logs-policy"
   role = aws_iam_role.grocery_ec2_role.id #policy lidhet me ec2 i njejti role si s3
 
@@ -24,12 +24,14 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy" { #aws_iam_role_policy c
           "logs:PutLogEvents"     #ec2 mund te shkruaj logs ne at kanal
         ]
 
+# Restrict log access to the GroceryMate log group
         Resource = "arn:aws:logs:eu-central-1:*:log-group:/aws/ec2/grocerymate:*" #tek cili log group? aws/ec2/grocermyate...
       }
     ]
   })
 }
 
+# Output the CloudWatch Log Group name after deployment
 output "cloudwatch_log_group_name" {
   description = "CloudWatch Log Group for GroceryMate"
   value       = aws_cloudwatch_log_group.grocerymate_logs.name
