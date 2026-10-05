@@ -24,6 +24,6 @@ variable "jwt_secret_key" {
 }
 
 variable "my_ip" {
-  description = "88.130.53.43/32"
+  description = "Your public IP for SSH access"
   type        = string
 }
