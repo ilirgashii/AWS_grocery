@@ -21,6 +21,8 @@ Complete Terraform configuration for deploying GroceryMate on AWS (eu-central-1 
 
 ## 🏗️ Architecture
 
+![GroceryMate AWS Architecture](docs/grocerymate-aws-architecture.png)
+
 ### Infrastructure Overview
 
 ```text
