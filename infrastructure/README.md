@@ -301,31 +301,6 @@ infrastructure/
 - ✅ **SSH keys git-ignored** - Private keys protected
 - ✅ **.tfstate git-ignored** - State file with all secrets protected
 
-### Best Practices
-
-1. **Never commit secrets:**
-   ```bash
-   # Check .gitignore
-   cat .gitignore
-   # Should exclude: *.tfvars, .tfstate, *.pem
-   ```
-
-2. **Use AWS SSO for credentials** (more secure than access keys)
-   ```bash
-   aws sso login --profile default
-   ```
-
-3. **Review terraform plan before apply:**
-   ```bash
-   terraform plan
-   # Read output carefully, especially RDS password fields
-   ```
-
-4. **Store sensitive values in environment variables:**
-   ```bash
-   export TF_VAR_db_password="secure-password"
-   export TF_VAR_jwt_secret_key="secret-key"
-   ```
 
 ---
 
@@ -364,36 +339,8 @@ terraform destroy -auto-approve
 # After destroy, state file is empty
 # You can delete local copies (but git-ignored anyway)
 rm terraform.tfstate terraform.tfstate.backup
-```
 
----
-
-## 🐛 Troubleshooting
-
-### Terraform Issues
-
-**Error: "region is required"**
 ```
-Solution: Check provider block in main.tf
-provider "aws" {
-  region = "eu-central-1"  # Must be set
-}
-```
-
-**Error: "The image id does not exist"**
-```
-Solution: AMI ID is region-specific
-For eu-central-1: ami-0f2f6d6f49dbe9fd1
-Run: aws ec2 describe-images --owners amazon --filters "Name=name,Values=amzn2-ami-hvm-*" --region eu-central-1
-```
-
-**Error: "terraform.tfstate is locked"**
-```
-Solution: Another terraform process is running
-Kill: pkill -f terraform
-Or wait for other operation to complete
-```
-
 ### Deployment Issues
 
 **SSH: "Permission denied (publickey)"**
