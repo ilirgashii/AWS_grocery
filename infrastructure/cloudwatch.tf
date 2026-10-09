@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "grocerymate_logs" { # CloudWatch Log Group 
 
 
 # Allows the EC2 IAM role to send application logs to CloudWatch
-resource "aws_iam_role_policy" "cloudwatch_logs_policy" { 
+resource "aws_iam_role_policy" "cloudwatch_logs_policy" {
   name = "cloudwatch-logs-policy"
   role = aws_iam_role.grocery_ec2_role.id #policy lidhet me ec2 i njejti role si s3
 
@@ -24,7 +24,7 @@ resource "aws_iam_role_policy" "cloudwatch_logs_policy" {
           "logs:PutLogEvents"     #ec2 mund te shkruaj logs ne at kanal
         ]
 
-# Restrict log access to the GroceryMate log group
+        # Restrict log access to the GroceryMate log group
         Resource = "arn:aws:logs:eu-central-1:*:log-group:/aws/ec2/grocerymate:*" #tek cili log group? aws/ec2/grocermyate...
       }
     ]

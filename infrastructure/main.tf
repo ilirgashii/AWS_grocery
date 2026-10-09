@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
+    }
+  }
+}
 
 provider "aws" {
   region = "eu-central-1"
@@ -67,13 +75,7 @@ resource "aws_security_group" "app_sg" {
     cidr_blocks = [var.my_ip]
   }
 
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
 
   ingress {
     description = "GroceryMate"
@@ -102,6 +104,7 @@ resource "aws_db_instance" "app_db" {
   engine_version         = "16"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
+  storage_encrypted      = true
   db_name                = "grocerydb"
   username               = var.db_username
   password               = var.db_password
