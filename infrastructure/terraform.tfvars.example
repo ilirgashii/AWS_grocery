@@ -1,0 +1,12 @@
+# PostgreSQL credentials
+db_username = "groceryadmin"
+db_password = "REPLACE_WITH_STRONG_PASSWORD"
+
+# EC2 SSH private key
+private_key_path = "~/.ssh/grocery-ec2-key"
+
+# JWT authentication
+jwt_secret_key = "REPLACE_WITH_RANDOM_SECRET"
+
+# Your public IP address for SSH
+my_ip = "YOUR_PUBLIC_IP/32"
