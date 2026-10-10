@@ -26,6 +26,7 @@
   - [Set Environment Variables](#-set-environment-variables)
   - [Start the Application](#-start-the-application)
 - [Usage](#-usage)
+- [Security Testing](#-security-testing--manual-web-application-assessment)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -156,6 +157,34 @@ python3 run.py
 - Browse and search for products
 - Manage favorites and shopping basket
 - Proceed through the checkout process
+
+## 🔐 Security Testing — Manual Web Application Assessment
+
+Manual security testing was performed on the AWS-hosted GroceryMate application using **Burp Suite Community Edition**, supported by basic source-code review.
+
+### Security Tests Performed
+
+| Security Area | Testing Method | Result |
+|---|---|---|
+| JWT Authentication | Missing and invalid JWT tokens | ✅ Rejected |
+| Access Control | Tested shopping basket isolation between two user accounts | ✅ Passed |
+| SQL Injection | Manual login injection and authentication bypass attempts | ✅ No bypass observed |
+| Password Security | Reviewed password verification using hashed passwords | ✅ Verified |
+| Cross-Site Scripting (XSS) | Tested HTML and JavaScript injection in application input fields | ✅ No execution observed |
+| Input Validation | Tested incorrect credentials and malformed inputs | ✅ Rejected |
+
+### Security Assessment Summary
+
+The tested authentication and access-control scenarios behaved as expected. No exploitable vulnerability was identified during the limited manual tests.
+
+**Scope:** This was a basic manual security assessment, not a comprehensive penetration test.
+
+**Future Improvements:**
+- Implement HTTPS/TLS for encrypted communication.
+- Review authorization and personal-data exposure in user-list endpoints.
+- Complete production server and security-header hardening.
+
+**Tools:** Burp Suite Community Edition, Browser Developer Tools, Python, SQLAlchemy.
 
 ## 🤝 Contributing
 
