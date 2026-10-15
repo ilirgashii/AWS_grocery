@@ -1,3 +1,15 @@
+## My contribution (Ilir Gashi)
+
+Forked from AlejandroRomanIbanez/AWS_grocery. I own the cloud infrastructure:
+
+- Terraform IaC for AWS (VPC, subnets, security groups) in `/infrastructure`
+- Network architecture improvements and security hardening
+- Automation and a Terraform variables example
+- Security testing documented in this README
+
+**Architecture:** (diagram here)
+**Deploy:** `cd infrastructure && terraform init && terraform apply`
+
 # GroceryMate
 
 ## 🏆 GroceryMate E-Commerce Platform
