@@ -23,8 +23,6 @@ Forked from [AlejandroRomanIbanez/AWS_grocery](https://github.com/AlejandroRoman
 [![GitHub Release](https://img.shields.io/github/v/release/AlejandroRomanIbanez/AWS_grocery)](https://github.com/AlejandroRomanIbanez/AWS_grocery/releases/tag/v2.0.0)
 [![Free](https://img.shields.io/badge/Free_for_Non_Commercial_Use-brightgreen)](#-license)
 
-⭐ **Star us on GitHub** — it motivates us a lot!
-
 ---
 
 ## 📌 Table of Contents
