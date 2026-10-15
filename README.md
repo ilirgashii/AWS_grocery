@@ -1,15 +1,18 @@
-## My contribution (Ilir Gashi)
+## 🙋 My contribution (Ilir Gashi)
 
-Forked from AlejandroRomanIbanez/AWS_grocery. I own the cloud infrastructure:
+Forked from [AlejandroRomanIbanez/AWS_grocery](https://github.com/AlejandroRomanIbanez/AWS_grocery), the original GroceryMate app. I built the AWS infrastructure and security testing around it:
 
-- Terraform IaC for AWS (VPC, subnets, security groups) in `/infrastructure`
-- Network architecture improvements and security hardening
-- Automation and a Terraform variables example
-- Security testing documented in this README
+- **Terraform IaC** (eu-central-1): custom VPC, public/private subnets across 2 AZs, security groups
+- **EC2 (Docker) + RDS PostgreSQL (private) + S3**, with IAM roles instead of hardcoded keys
+- **CloudWatch Logs** via Docker `awslogs` driver
+- **Automated deployment** with Terraform provisioners and a variables example
+- **Manual security assessment** with Burp Suite: [see results](#-security-testing--manual-web-application-assessment)
 
-**Architecture:** ([diagram here](https://github.com/ilirgashii/AWS_grocery/blob/version2/infrastructure/docs/grocerymate-aws-architecture.png))
-**Deploy:** `cd infrastructure && terraform init && terraform apply`
+![GroceryMate AWS architecture](infrastructure/docs/grocerymate-aws-architecture.png)
 
+📖 Full details and deploy steps: [infrastructure/README.md](infrastructure/README.md)
+
+---
 # GroceryMate
 
 ## 🏆 GroceryMate E-Commerce Platform
