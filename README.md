@@ -7,7 +7,7 @@ Forked from AlejandroRomanIbanez/AWS_grocery. I own the cloud infrastructure:
 - Automation and a Terraform variables example
 - Security testing documented in this README
 
-**Architecture:** (diagram here)
+**Architecture:** ([diagram here](https://github.com/ilirgashii/AWS_grocery/blob/version2/infrastructure/docs/grocerymate-aws-architecture.png))
 **Deploy:** `cd infrastructure && terraform init && terraform apply`
 
 # GroceryMate
